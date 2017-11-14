@@ -153,7 +153,7 @@ class Rest2 {
     return this.makeAuthRequest(`/auth/r/trades/${symbol}/hist`, {start, end, limit}, cb)
   }
 
-  ordertrades (symbol = 'tBTCUSD', orderId, cb) {
+  orderTrades (symbol = 'tBTCUSD', orderId, cb) {
     return this.makeAuthRequest(`/auth/r/order/${symbol}:${orderId}/trades`, cb);
   }
 
