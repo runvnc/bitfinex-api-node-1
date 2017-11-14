@@ -25,6 +25,24 @@ class Rest2 {
     console.log(err, result)
   }
 
+  setNextNonce(nonce) {
+    this.nonce = nonce+"";
+  }
+
+  checkNonce() {
+    let nonce = Date.now().toString();
+    if (this.nonce) nonce = this.nonce;
+    if (!this.lastNonce) {
+      this.lastNonce = nonce;
+      return nonce;
+    }
+    if (nonce*1 <= this.lastNonce*1)
+      throw new Error("Bitfinex nonce did not increment."+
+                      "last="+this.lastNonce+"curr="+nonce);
+    this.lastNonce = nonce;
+    return nonce;
+  }
+
   makeAuthRequest (path, payload = {}, cb = this.genericCallback) {
     if (!this.key || !this.secret) {
       return cb(new Error('missing api key or secret'))
@@ -39,7 +57,7 @@ class Rest2 {
     }
 
     const url = `${this.url}/${this.version}/${path}`
-    const nonce = JSON.stringify(this.generateNonce())
+    const nonce = JSON.stringify(this.checkNonce())
     const rawBody = JSON.stringify(payload)
 
     let signature = `/api/${this.version}${path}${nonce}${rawBody}`
@@ -133,6 +151,10 @@ class Rest2 {
 
   trades (symbol = 'tBTCUSD', start = null, end = null, limit = null, cb) {
     return this.makeAuthRequest(`/auth/r/trades/${symbol}/hist`, {start, end, limit}, cb)
+  }
+
+  ordertrades (symbol = 'tBTCUSD', orderId, cb) {
+    return this.makeAuthRequest(`/auth/r/order/${symbol}:${orderId}/trades`, cb);
   }
 
   // TODO
