@@ -80,6 +80,7 @@ class Rest2 {
     })
     .then((response) => cb(null, response))
     .catch((error) => {
+      console.log(rp);
       if (error.error[1] === 10114) {
         error.message = error.message +
         ' see https://github.com/bitfinexcom/bitfinex-api-node/blob/master/README.md#nonce-too-small for help'
