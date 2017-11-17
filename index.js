@@ -11,7 +11,7 @@ class BFX {
   constructor (apiKey, apiSecret, opts = { version: 1, transform: false, nonceGenerator: false }) {
     this.apiKey = apiKey
     this.apiSecret = apiSecret
-
+    this.nonce = opts.nonce
     if (opts.autoOpen !== false) {
       opts.autoOpen = true
     }
@@ -36,7 +36,7 @@ class BFX {
 
     if (opts.version === 2) {
       this.rest = new REST2(this.apiKey, this.apiSecret, { transformer: transformer })
-      this.ws = new WS2(this.apiKey, this.apiSecret, { transformer: transformer })
+      this.ws = new WS2(this.apiKey, this.apiSecret, { transformer: transformer, nonce: this.nonce })
       opts.autoOpen && this.ws.open()
       return
     }
