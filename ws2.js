@@ -20,7 +20,7 @@ class BitfinexWS2 extends EventEmitter {
     super()
     this.apiKey = apiKey
     this.apiSecret = apiSecret
-    this.nonce = nonce
+    this.nonce = opts.nonce
     this.websocketURI = opts.websocketURI || 'wss://api.bitfinex.com/ws/2'
     this.transformer = opts.transformer || passThrough
   }
