@@ -20,6 +20,7 @@ class BitfinexWS2 extends EventEmitter {
     super()
     this.apiKey = apiKey
     this.apiSecret = apiSecret
+    this.nonce = nonce
     this.websocketURI = opts.websocketURI || 'wss://api.bitfinex.com/ws/2'
     this.transformer = opts.transformer || passThrough
   }
@@ -272,7 +273,7 @@ class BitfinexWS2 extends EventEmitter {
   }
 
   auth (calc = 0) {
-    const authNonce = (new Date()).getTime() * 1000
+    const authNonce = this.nonce; //(new Date()).getTime() * 1000
     const payload = 'AUTH' + authNonce + authNonce
     const signature = crypto.createHmac('sha384', this.apiSecret).update(payload).digest('hex')
     this.send({
