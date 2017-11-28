@@ -11,6 +11,7 @@ class Rest2 {
     this.key = key
     this.secret = secret
     this.nonce = Date.now()
+    if (opts.nonce) this.nonce = opts.nonce;
     this.generateNonce = (typeof opts.nonceGenerator === 'function')
       ? opts.nonceGenerator
       : function () {
@@ -30,7 +31,7 @@ class Rest2 {
   }
 
   checkNonce() {
-    let nonce = Date.now().toString();
+    let nonce = (Date.now()*1000).toString();
     if (this.nonce) nonce = this.nonce;
     if (!this.lastNonce) {
       this.lastNonce = nonce;
