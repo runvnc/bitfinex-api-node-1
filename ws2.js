@@ -274,8 +274,6 @@ class BitfinexWS2 extends EventEmitter {
 
   auth (calc = 0) {
     const authNonce = this.nonce //(new Date()).getTime() * 1000
-    console.log('this.nonce is ',this.nonce,'authNonce is',authNonce,'this is',this);
- 
     const payload = 'AUTH' + authNonce + authNonce
     const signature = crypto.createHmac('sha384', this.apiSecret).update(payload).digest('hex')
     this.send({
